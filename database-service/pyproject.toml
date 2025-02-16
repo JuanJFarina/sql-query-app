@@ -1,0 +1,38 @@
+[build-system]
+requires = [
+    "setuptools ~= 68.2",
+    "wheel ~= 0.41.2",
+    "setuptools-pipfile ~= 0.7.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "database-service"
+authors = [
+    { name = "Juan José Farina", email = "juanjosefarina.jjf@gmail.com" }
+]
+requires-python = ">=3.10"
+dynamic = ['version']
+classifiers = []
+
+[project.urls]
+repository = "https://github.com/JuanJFarina/sql-query-app"
+
+[project.scripts]
+database_service = "database_service.__main__:app"
+
+#########################
+# Setuptools
+#########################
+
+[tool.setuptools.package-data]
+"*" = ["py.typed", "*.md"]
+
+[tool.setuptools.dynamic]
+version = { attr = "database_service.__version__" }
+
+#########################
+# Setuptools-Pipfile
+#########################
+
+[tool.setuptools-pipfile]
