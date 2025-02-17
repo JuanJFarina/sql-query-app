@@ -4,6 +4,6 @@ COPY . .
 RUN pip install pipenv && \
     pipenv install
 
-EXPOSE 8501
+EXPOSE 8001
 
 CMD ["pipenv", "run", "serve"]

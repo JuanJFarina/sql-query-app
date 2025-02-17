@@ -3,15 +3,24 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[[source]]
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+name = "pytorch"
+
 [packages]
-pytest = "*"
 pydantic = "*"
+fastapi = "*"
+uvicorn = "*"
+requests = "*"
+llmware = "*"
 
 [dev-packages]
+pytest = "*"
 
 [requires]
 python_version = "3.10"
 
 [scripts]
 test = "pytest"
-serve = "python database_service/main.py"
+serve = "uvicorn text_to_sql_service.main:app --host 0.0.0.0 --port 8001"

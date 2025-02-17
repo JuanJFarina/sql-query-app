@@ -3,28 +3,50 @@ services:
     image: postgres
     restart: always
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     env_file: ".env"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 1s
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 5
 
   database_service:
     build: ./database-service
     ports:
-      - "8000:8000"
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
     env_file: ".env"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
 
   text_to_sql_service:
     build: ./text-to-sql-service
     ports:
-      - "5001:5001"
+      - "${TEXT_TO_SQL_PORT}:${TEXT_TO_SQL_PORT}"
     env_file: ".env"
+    depends_on:
+      - database_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${TEXT_TO_SQL_SERVICE}:${TEXT_TO_SQL_PORT}/docs#"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 4G
 
   user_interface_service:
     build: ./user-interface-service
     ports:
-      - "8501:8501"
+      - "${USER_INTERFACE_PORT}:${USER_INTERFACE_PORT}"
     env_file: ".env"
+    depends_on:
+      - text_to_sql_service
+
+volumes:
+  postgres_data:
