@@ -84,10 +84,11 @@ model was chosen due to its CPU-friendly performance.
 - Refactor code to separete concerns and follow best practices.
 - Add Pydantic models where missing.
 - Add tests to cover 100% of the code.
-- Add Loguru for logging.
+- Add Loguru for enhanced logging.
 - Migrate to Pantsbuild for better dependency management.
 - Add a CI build pipeline for linting and testing.
 - Refactor docker-related files to implement automatic re-starts and hot-reloads, as
 well as more optimized images and build-times through caches, etc.
 - Evaluate better text-to-sql models.
 - Implement an LLM for natural language responses.
+- Implement observability services with Grafana and Prometheus.
